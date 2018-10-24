@@ -14,6 +14,7 @@ class App extends Component {
     fullVenue : [],
     filteredVenue : []
   }
+  filteredVenue = [];
 
   componentDidMount(){
     this.loadMap();
@@ -61,6 +62,7 @@ class App extends Component {
             fullVenue : listOfVenues,
             queryString : queryString
           })
+          this.filteredVenue = this.state.fullVenue;
           this.createMarkers();
         }
       }
@@ -103,16 +105,16 @@ class App extends Component {
   }
 
   createMarkers(value = null){
-   let tempArray = this.state.fullVenue;
+   
    if(value){
-     tempArray = tempArray.filter((venue)=>{
+     this.filteredVenue = this.state.fullVenue.filter((venue)=>{
        if (venue.venue.name.indexOf(value) > -1){
          return venue;
        }
      });
    }
-    console.log(tempArray);
-      tempArray.forEach(element => {
+    console.log(this.filteredVenue);
+    this.filteredVenue.forEach(element => {
       console.log(window.document.google);
       if(window.google){
         var marker = new window.google.maps.Marker({
@@ -151,8 +153,8 @@ class App extends Component {
           </div>
           <div id="dropdown">
             <FilterList onOptionChanged={this.optionChanged.bind(this)}></FilterList>
-            <ListItems></ListItems>
             <SearchBar filterChanged={this.filterChanged.bind(this)}></SearchBar>
+            <ListItems listVenues={this.filteredVenue}></ListItems>
           </div>
       </div>
       

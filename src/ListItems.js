@@ -4,14 +4,16 @@ import './App.css';
 import axios from 'axios'
 
 class ListItems extends Component {
-    change(event){
-        console.log("Changing the option: ", event.target.value);
-    }
+
     render(){
         return(
-          <ul>
-              <li></li>
-          </ul>
+            <div>
+            <ul className="list-group">
+                {this.props.listVenues.map(function(elem){
+                    <li key={elem.venue.id} className="list-group-item">{elem.venue.name}</li>
+                })}
+            </ul>
+          </div>
         )
     }
 
