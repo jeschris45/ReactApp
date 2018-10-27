@@ -18,7 +18,7 @@ class App extends Component {
 
   componentDidMount(){
     this.loadMap();
-    this.getPlaces("Food");
+    this.getPlaces("Fast Food");
     console.log("Component DID MOUNT");
     
   }
@@ -100,6 +100,7 @@ class App extends Component {
     this.getPlaces(value);
   }
   filterChanged(value){
+    console.log("FILTER VALUE", value);
     this.clearMarkers();
     this.createMarkers(value);
   }
@@ -113,16 +114,16 @@ class App extends Component {
       }
     });
   }
-  this.setState({
-    "filteredVenue" : filteredVenue
-  })
-    this.state.filteredVenue.forEach(element => {
+  
+    console.log("BEFORE CREATING MARKER", this.state.filteredVenue);
+      filteredVenue.forEach(element => {
       console.log(window.document.google);
       if(window.google){
         var marker = new window.google.maps.Marker({
           position : {lat: element.venue.location.lat,
                       lng: element.venue.location.lng},
         })
+        marker.set('id', element.venue.id);
         console.log(this.state);
         const self = this;
         marker.addListener('click', function(){
@@ -142,6 +143,9 @@ class App extends Component {
         })
         marker.setMap(this.map);
         this.markers.push(marker);
+        this.setState({
+          "filteredVenue" : filteredVenue
+        })
       }
       
 
@@ -149,7 +153,18 @@ class App extends Component {
   }
 
   listClicked(value){
-    console.log("THE ID CLICKED" ,value);
+   let markerClicked = this.searchforMarkervalue(value);
+   window.google.maps.event.trigger(markerClicked, 'click');
+  }
+
+  searchforMarkervalue(value){
+    for(var i = 0, len = this.markers.length; i < len; i++){
+      if(this.markers[i].id === value){
+        return this.markers[i];
+      }
+    }
+    console.log("RETURNING NULL");
+    return null;
   }
 
   render() {

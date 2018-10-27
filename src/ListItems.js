@@ -11,13 +11,17 @@ class ListItems extends Component {
     componentDidUpdate(){
         console.log("The list items are: ", this.props.listVenues);
     }
+    handleClickEvent(event){
+        event.target.siblin
+        this.props.listClicked(event.target.getAttribute('value'));
+    }
 
     render(){
         return(
             <div>
-            <ul className="list-group" onClick={e => this.listClicked(e.target.value)}>
+            <ul className="list-group" onClick={this.handleClickEvent.bind(this)}>
                 {this.props.listVenues.map(function(elem){
-                    return <li key={elem.venue.id} className="list-group-item" value={"ID-" + elem.venue.id}>{elem.venue.name}</li>
+                    return <li key={elem.venue.id} className="list-group-item list-group-item-action" value={ elem.venue.id}>{elem.venue.name}</li>
                 })}
             </ul>
           </div>
