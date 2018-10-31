@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import FilterList from './FilterList.js'
 import ListItems from './ListItems.js';
 import SearchBar from './SearchBar';
+import registerServiceWorker from './registerServiceWorker';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios'
@@ -20,11 +21,14 @@ class App extends Component {
     this.loadMap();
     this.getPlaces("Fast Food");
     console.log("Component DID MOUNT");
+    registerServiceWorker();
     
   }
   componentDidUpdate(){
 
   }
+
+
   
 
 
@@ -80,7 +84,7 @@ class App extends Component {
     console.log("CALLING");
      this.map = new window.google.maps.Map(document.getElementById('map'), {
       center: {lat: 34.0029, lng: -84.1446},
-      zoom: 16
+      zoom: 12
     });
 
     if(this.state.fullVenue.length> 0){
@@ -167,19 +171,39 @@ class App extends Component {
     return null;
   }
 
+  openNav(){
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+  }
+  closeNav(){
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+  }
+
   render() {
     return (
-      <div className="row">
-          <div id="map">
-          </div>
-          <div id="dropdown">
-            <FilterList onOptionChanged={this.optionChanged.bind(this)}></FilterList>
-            <SearchBar filterChanged={this.filterChanged.bind(this)}></SearchBar>
-            <ListItems listVenues={this.state.filteredVenue} listClicked={this.listClicked.bind(this)}></ListItems>
-          </div>
+      <div className="wrapper">
+      <div className="header">
+      <div className="header-text col-11">Neighborhood Map Project</div>
+        <div id="hamburger-menu col-1" className="hamburger-menu">
+          <span onClick={this.openNav}>&#9776;</span>
+        </div>
       </div>
       
+        <div id="mySidenav" className="sidenav">
+          <a className="white-text">Food Venues</a>
+          <a href="javascript:void(0)" className="closebtn" onClick={this.closeNav}>&times;</a>
+          {/* <FilterList onOptionChanged={this.optionChanged.bind(this)}></FilterList> */}
+          <SearchBar filterChanged={this.filterChanged.bind(this)}></SearchBar>
+          <ListItems listVenues={this.state.filteredVenue} listClicked={this.listClicked.bind(this)}></ListItems>
+        </div>
+        <div id="main">
+          <div id="map">
+          </div>
+        </div>
+      </div>
     );
+    
   }
 
 

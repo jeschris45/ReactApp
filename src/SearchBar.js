@@ -9,10 +9,8 @@ class SearchBar extends Component {
     }
     render(){
         return(
-            <div className="row">
-                <div className="col-md-10">
+            <div className="searchBar">
                     <input placeholder="Type to filter" onChange={e=> this.props.filterChanged(e.target.value)}></input> 
-                </div>
             </div>
         )
     }
